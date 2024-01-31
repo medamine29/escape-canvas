@@ -1,5 +1,6 @@
 'use strict';
 
+const socket = io('http://localhost:3004');
 const $table = document.querySelector('#grid-table');
 const $colorPicker = document.querySelector('#color-picker');
 
@@ -78,19 +79,10 @@ const handleKeyboardNavigation = (event, cell, colIndex) => {
   }
 };
 
-
 const updateCellColor = (color, rowIndex, colIndex) => {
-  fetch('http://localhost:3003/canvas', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ color, rowIndex, colIndex }),
-  })
-  .then(res => res.json())
-  .then(renderTable)
+  socket.emit('updateCell', { color, rowIndex, colIndex });
 };
 
-fetch('http://localhost:3003/canvas')
-  .then((res) => res.json())
-  .then(renderTable);
+socket.on('canvasUpdate', (updatedCanvas) => {
+  renderTable(updatedCanvas);
+});
