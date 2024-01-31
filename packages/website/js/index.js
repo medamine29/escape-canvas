@@ -1,6 +1,7 @@
 'use strict';
 
 const $table = document.querySelector('#grid-table');
+const $colorPicker = document.querySelector('#color-picker');
 
 const renderTable = (grid) => {
 
@@ -21,6 +22,12 @@ const renderTable = (grid) => {
       // Apply color to cell
       $td.style.backgroundColor = color;
 
+      // Add click event listener to each cell
+      $td.addEventListener('click', () => {
+        const selectedColor = $colorPicker.value;
+        updateCellColor(selectedColor, { row: i, col: j });
+      });
+
       // add cell to row
       $tr.appendChild($td);
     }
@@ -29,6 +36,18 @@ const renderTable = (grid) => {
     $table.appendChild($tr);
   }
 
+};
+
+const updateCellColor = (color, cellIndex) => {
+  fetch('http://localhost:3003/canvas', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ color, cellIndex }),
+  })
+  .then(res => res.json())
+  .then(renderTable)
 };
 
 fetch('http://localhost:3003/canvas')
