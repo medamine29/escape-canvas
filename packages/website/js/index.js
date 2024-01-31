@@ -5,6 +5,9 @@ const $colorPicker = document.querySelector('#color-picker');
 
 const renderTable = (grid) => {
 
+  // clear table before handling
+  $table.innerHTML = ''
+
   // iterate over grid
   for (let i = 0; i < grid.length; i++) {
     const gridRow = grid[i];
@@ -25,7 +28,7 @@ const renderTable = (grid) => {
       // Add click event listener to each cell
       $td.addEventListener('click', () => {
         const selectedColor = $colorPicker.value;
-        updateCellColor(selectedColor, { row: i, col: j });
+        updateCellColor(selectedColor, i, j);
       });
 
       // add cell to row
@@ -38,13 +41,13 @@ const renderTable = (grid) => {
 
 };
 
-const updateCellColor = (color, cellIndex) => {
+const updateCellColor = (color, rowIndex, colIndex) => {
   fetch('http://localhost:3003/canvas', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ color, cellIndex }),
+    body: JSON.stringify({ color, rowIndex, colIndex }),
   })
   .then(res => res.json())
   .then(renderTable)
