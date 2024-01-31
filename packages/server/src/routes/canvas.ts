@@ -45,7 +45,6 @@ router.route({
       // Parse the request body as JSON
       const { rowIndex, colIndex, color } = await request.json();
 
-      console.log('here !', color, colIndex, rowIndex);
       // Update the canvas
       updateCanvas(rowIndex, colIndex, color);
       return Response.json({ success: true }); // No content response
