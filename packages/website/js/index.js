@@ -3,6 +3,7 @@
 const socket = io('http://localhost:3004');
 const $table = document.querySelector('#grid-table');
 const $colorPicker = document.querySelector('#color-picker');
+const rateLimitMessageElement = document.getElementById('rate-limit-message');
 
 const renderTable = (grid) => {
 
@@ -80,9 +81,15 @@ const handleKeyboardNavigation = (event, cell, colIndex) => {
 };
 
 const updateCellColor = (color, rowIndex, colIndex) => {
+  // send color changing event
   socket.emit('updateCell', { color, rowIndex, colIndex });
 };
 
 socket.on('canvasUpdate', (updatedCanvas) => {
   renderTable(updatedCanvas);
+});
+
+socket.on('rateLimitExceeded', (errorMessage) => {
+  // show sth on screen when rate exceeded
+  rateLimitMessageElement.innerHTML = errorMessage
 });
