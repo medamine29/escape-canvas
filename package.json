@@ -1,0 +1,29 @@
+{
+  "name": "@rploce/main",
+  "homepage": "https://github.com/escape.tech/rploce#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/escape.tech/rploce.git"
+  },
+  "author": "Escape Technologies SAS",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "format": "prettier --write --ignore-unknown $INIT_CWD"
+  },
+  "dependencies": {
+    "graphql": "^16.6.0"
+  },
+  "devDependencies": {
+    "@tsconfig/esm": "^1.0.3",
+    "@tsconfig/node18": "^2.0.1",
+    "@tsconfig/strictest": "^2.0.1",
+    "prettier": "^2.8.8"
+  },
+  "packageManager": "yarn@4.0.0-rc.45",
+  "volta": {
+    "node": "20.2.0",
+    "yarn": "1.22.19"
+  }
+}
