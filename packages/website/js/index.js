@@ -25,6 +25,12 @@ const renderTable = (grid) => {
       // Apply color to cell
       $td.style.backgroundColor = color;
 
+      // make cell focusable
+      $td.tabIndex = 0
+
+      // Add keyboard navigation
+      $td.addEventListener('keydown', (e) => handleKeyboardNavigation(e, $td, j));
+
       // Add click event listener to each cell
       $td.addEventListener('click', () => {
         const selectedColor = $colorPicker.value;
@@ -40,6 +46,38 @@ const renderTable = (grid) => {
   }
 
 };
+
+const handleKeyboardNavigation = (event, cell, colIndex) => {
+  switch (event.key) {
+    case 'ArrowLeft':
+      // Navigate to the left cell
+      const leftCell = cell.previousElementSibling;
+      if (leftCell) leftCell.focus();
+      break;
+    case 'ArrowRight':
+      // Navigate to the right cell
+      const rightCell = cell.nextElementSibling;
+      if (rightCell) rightCell.focus();
+      break;
+    case 'ArrowUp':
+      // Navigate to the cell above
+      const upperRow = cell.parentElement.previousElementSibling;
+      const upperCell = upperRow?.children[colIndex];
+      if (upperCell) upperCell.focus();
+      break;
+    case 'ArrowDown':
+      // Navigate to the cell below
+      const lowerRow = cell.parentElement.nextElementSibling;
+      const lowerCell = lowerRow?.children[colIndex];
+      if (lowerCell) lowerCell.focus();
+      break;
+    case 'Enter':
+      // Trigger click event
+      cell.click();
+      break;
+  }
+};
+
 
 const updateCellColor = (color, rowIndex, colIndex) => {
   fetch('http://localhost:3003/canvas', {
